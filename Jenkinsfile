@@ -5,8 +5,9 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // Check out the source code
-                    git 'https://github.com/arabindamcs/product-service-java.git'
+                  // Clean workspace and checkout the source code
+                    cleanWs()
+                    checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'https://github.com/arabindamcs/product-service-java.git']]])
                 }
             }
         }
