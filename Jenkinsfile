@@ -7,7 +7,7 @@ pipeline {
                 script {
                   // Clean workspace and checkout the source code
                     cleanWs()
-                    checkout([$class: 'GitSCM', branches: [[name: 'master']], userRemoteConfigs: [[url: 'https://github.com/arabindamcs/product-service-java.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/arabindamcs/product-service-java.git']]])
                 }
             }
         }
