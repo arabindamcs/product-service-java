@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        CUSTOM_BUILD_ID = "dontKillMe"
+        JENKINS_NODE_COOKIE = "dontKillMe"
     }
 
     stages {
@@ -35,10 +35,10 @@ pipeline {
             steps {
                 script {
                     // Set custom BUILD_ID
-                    env.BUILD_ID = CUSTOM_BUILD_ID
+                    env.JENKINS_NODE_COOKIE = JENKINS_NODE_COOKIE
                     
                     sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > startserver.log 2>&1 & disown'
-                    sleep 30  // Wait for 30 seconds (adjust as needed)
+                    sleep 10  // Wait for 30 seconds (adjust as needed)
            
                 }
             }
