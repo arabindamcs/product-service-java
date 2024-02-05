@@ -30,7 +30,7 @@ pipeline {
         stage('Start New Application') {
             steps {
                 script {
-                    sh 'nohup mvn spring-boot:run > log.out 2>&1 &'
+                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > startserver.log &'
                     sleep 10  // Wait for 10 seconds
                 }
             }
