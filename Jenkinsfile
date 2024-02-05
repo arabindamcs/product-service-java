@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'mvn clean install --batch-mode'
+                    sh 'sudo mvn clean install --batch-mode'
                 }
             }
         }
@@ -22,7 +22,7 @@ pipeline {
         stage('Stop Existing Application') {
             steps {
                 script {
-                    sh 'pkill -f product-service-0.0.1-SNAPSHOT.jar || true'
+                    sh 'sudo pkill -f product-service-0.0.1-SNAPSHOT.jar || true'
                 }
             }
         }
@@ -30,7 +30,7 @@ pipeline {
         stage('Start New Application') {
             steps {
                 script {
-                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 & disown'
+                    sh 'sudo nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 & disown'
                     sleep 10  // Wait for 10 seconds
                 }
             }
