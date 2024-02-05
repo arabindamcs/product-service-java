@@ -40,6 +40,7 @@ pipeline {
     post {
         success {
             echo 'Deployment successful.'
+            processTreeKiller exclude: 'product-service-0.0.1-SNAPSHOT.*'
         }
         failure {
             echo 'Deployment failed.'
