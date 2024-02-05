@@ -31,6 +31,8 @@ pipeline {
             steps {
                 script {
                     sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > startserver.log &'
+                                def exitCode = sh(script: 'echo $?', returnStatus: true)
+            echo "Java process exited with code: ${exitCode}"
                     sleep 10  // Wait for 10 seconds
            
                 }
