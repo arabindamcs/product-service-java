@@ -30,7 +30,7 @@ pipeline {
         stage('Start New Application') {
             steps {
                 script {
-                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 & disown'
+                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > startserver.log 2>&1 & disown'
                     sleep 10  // Wait for 10 seconds
                 }
             }
