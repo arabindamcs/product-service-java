@@ -1,11 +1,10 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
                 script {
-                  // Clean workspace and checkout the source code
                     cleanWs()
                     checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/arabindamcs/product-service-java.git']]])
                 }
@@ -15,8 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Build the Maven project
-                    sh 'mvn clean install'
+                    sh 'mvn clean install --batch-mode'
                 }
             }
         }
@@ -24,7 +22,6 @@ pipeline {
         stage('Stop Existing Application') {
             steps {
                 script {
-                    // Replace 'your-app-name' with the actual name of your Spring Boot application JAR
                     sh 'pkill -f product-service-0.0.1-SNAPSHOT.jar || true'
                 }
             }
@@ -33,10 +30,19 @@ pipeline {
         stage('Start New Application') {
             steps {
                 script {
-                    // Replace 'your-app-name' with the actual name of your Spring Boot application JAR
-                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar &'
+                    sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 & disown'
+                    sleep 10  // Wait for 10 seconds
                 }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful.'
+        }
+        failure {
+            echo 'Deployment failed.'
         }
     }
 }
