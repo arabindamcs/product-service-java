@@ -31,7 +31,7 @@ pipeline {
             steps {
                 script {
                     sh 'nohup java -jar target/product-service-0.0.1-SNAPSHOT.jar > startserver.log 2>&1 & disown'
-            sleep 30  // Wait for 30 seconds (adjust as needed)
+            sleep 100  // Wait for 30 seconds (adjust as needed)
            
                 }
             }
