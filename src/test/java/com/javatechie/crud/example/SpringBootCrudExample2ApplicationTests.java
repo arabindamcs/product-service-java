@@ -8,6 +8,7 @@ class SpringBootCrudExample2ApplicationTests {
 
 	@Test
 	void contextLoads() {
+		System.out.....
 	}
 
 }
