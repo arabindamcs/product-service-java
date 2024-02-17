@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBootCrudExample2Application {
 
 	public static void main(String[] args) {
+		System.out.println("Starting spring boot application................");
 		SpringApplication.run(SpringBootCrudExample2Application.class, args);
 	}
 
