@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*") // Allow requests from all origins
 public class ProductController {
 
     @Autowired
