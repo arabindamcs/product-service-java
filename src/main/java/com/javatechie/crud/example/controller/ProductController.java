@@ -13,44 +13,44 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-    @CrossOrigin
+    //@CrossOrigin
     @PostMapping("/addProduct")
     public Product addProduct(@RequestBody Product product) {
         System.out.println("Saving product");
         return service.saveProduct(product);
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @PostMapping("/addProducts")
     public List<Product> addProducts(@RequestBody List<Product> products) {
         return service.saveProducts(products);
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @GetMapping("/products")
     public List<Product> findAllProducts() {
         return service.getProducts();
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @GetMapping("/productById/{id}")
     public Product findProductById(@PathVariable int id) {
         return service.getProductById(id);
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @GetMapping("/product/{name}")
     public Product findProductByName(@PathVariable String name) {
         return service.getProductByName(name);
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @PutMapping("/update")
     public Product updateProduct(@RequestBody Product product) {
         return service.updateProduct(product);
     }
 
-    @CrossOrigin
+    //@CrossOrigin
     @DeleteMapping("/delete/{id}")
     public String deleteProduct(@PathVariable int id) {
         return service.deleteProduct(id);
