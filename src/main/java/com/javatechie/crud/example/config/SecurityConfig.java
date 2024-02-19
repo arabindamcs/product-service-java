@@ -23,10 +23,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.httpBasic().disable()
             .csrf().disable()
             .authorizeRequests()
-                .antMatchers("/api/products").authenticated() // Secure this endpoint
-                .antMatchers(HttpMethod.GET, "/api/products/**").permitAll() // Allow GET requests to this endpoint
-                .anyRequest().permitAll() // Allow other requests without authentication
+                .antMatchers("/api/products").authenticated()
+                .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .anyRequest().permitAll()
             .and()
+            .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
             .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }
