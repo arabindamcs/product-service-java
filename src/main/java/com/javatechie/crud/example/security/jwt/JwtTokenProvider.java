@@ -53,4 +53,17 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public Authentication getAuthentication(String token) {
+        // Parse the token to extract claims
+        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+
+        // Extract user details from claims
+        String username = claims.getSubject();
+
+        // You might need additional logic here to retrieve user roles or other details from claims
+
+        // Create and return the Authentication object
+        return new UsernamePasswordAuthenticationToken(username, null, null);
+    }
 }
