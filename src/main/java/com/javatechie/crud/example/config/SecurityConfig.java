@@ -20,11 +20,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().disable()
+        http
+            .httpBasic().disable()
             .csrf().disable()
             .authorizeRequests()
                 .antMatchers("/api/products").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/products/**").permitAll()
+                .antMatchers("/api/register").permitAll() // Assuming this is your user registration endpoint
                 .anyRequest().permitAll()
             .and()
             .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
