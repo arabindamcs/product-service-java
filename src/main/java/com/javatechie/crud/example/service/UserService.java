@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +17,11 @@ public class UserService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Added for password encoding
+
     public User saveUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Encode password before saving
         return userRepository.save(user);
     }
 
@@ -43,11 +48,14 @@ public class UserService implements UserDetailsService {
 
     public User updateUser(User user) {
         User existingUser = userRepository.findById(user.getId()).orElse(null);
-        existingUser.setUsername(user.getUsername());
-        existingUser.setPassword(user.getPassword());
-        existingUser.setRoles(user.getRoles());
-        // Set other fields as needed
-        return userRepository.save(existingUser);
+        if (existingUser != null) {
+            existingUser.setUsername(user.getUsername());
+            existingUser.setPassword(passwordEncoder.encode(user.getPassword())); // Encode updated password
+            existingUser.setRoles(user.getRoles());
+            // Set other fields as needed
+            return userRepository.save(existingUser);
+        }
+        return null;
     }
 
     @Override
@@ -58,8 +66,8 @@ public class UserService implements UserDetailsService {
         }
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getUsername())
-                .password(user.getPassword()) // You may want to use a password encoder here
-                .roles(user.getRoles().toArray(new String[0])) // Convert roles set to array
+                .password(user.getPassword())
+                .roles(user.getRoles().toArray(new String[0]))
                 .build();
     }
 }
