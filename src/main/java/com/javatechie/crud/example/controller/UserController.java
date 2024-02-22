@@ -1,14 +1,19 @@
 package com.javatechie.crud.example.controller;
 
+import com.javatechie.crud.example.entity.AuthenticationRequest;
 import com.javatechie.crud.example.entity.User;
 import com.javatechie.crud.example.service.UserService;
+import com.javatechie.crud.example.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,10 +22,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         try {
-            userService.saveUser(user); // Update method name to saveUser
+            userService.saveUser(user);
             return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -57,6 +68,24 @@ public class UserController {
                 : new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
 
-    // Other user-related endpoints can be added as needed
+    @PostMapping("/authenticate")
+    public ResponseEntity<String> authenticateUser(@RequestBody AuthenticationRequest authenticationRequest) {
+        try {
+            // Authenticate the user
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            authenticationRequest.getUsername(),
+                            authenticationRequest.getPassword()
+                    )
+            );
 
+            // Generate JWT token
+            String jwtToken = jwtTokenProvider.generateToken(authentication);
+
+            // Return the JWT token
+            return new ResponseEntity<>(jwtToken, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNAUTHORIZED);
+        }
+    }
 }
