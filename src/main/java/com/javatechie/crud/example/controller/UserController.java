@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userService.getAllUsers();
+        return userService.getUsers();
     }
 
     @GetMapping("/{id}")
@@ -56,8 +56,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
-        User user = userService.updateUser(id, updatedUser);
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
+        User user = userService.updateUser(updatedUser);
         return user != null ? new ResponseEntity<>(user, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

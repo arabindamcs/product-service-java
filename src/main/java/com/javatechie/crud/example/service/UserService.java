@@ -41,9 +41,12 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
-    public String deleteUser(Long id) {
-        userRepository.deleteById(id);
-        return "user removed !! " + id;
+    public boolean deleteUser(Long id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     public User updateUser(User user) {

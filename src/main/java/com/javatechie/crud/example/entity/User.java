@@ -30,4 +30,10 @@ public class User {
     private Set<String> roles;
 
     // Constructors, getters, and setters
+    // New constructor
+    public User(String username, String password, Set<String> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 }
